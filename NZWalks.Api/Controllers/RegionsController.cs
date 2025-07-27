@@ -74,6 +74,8 @@ public class RegionsController : ControllerBase
     }
 
     [HttpPut("api/regions/{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
     {
         // Check if the region exists
@@ -103,6 +105,8 @@ public class RegionsController : ControllerBase
  
         return Ok(regionDto);
     }
+    
+    
     [HttpGet("api/regions/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
