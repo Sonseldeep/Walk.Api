@@ -62,7 +62,7 @@ public class RegionsController : ControllerBase
         };
 
         // Add new region to database
-        await _regionRepository.CreateAsync(regionDomainModel);
+        regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);
     
          
         // Map the Domain Model to DTO
@@ -83,21 +83,22 @@ public class RegionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
     {
+        // Map DTO to Domain Model
+        var regionDomainModel = new Region
+        {
+            Code = updateRegionRequestDto.Code,
+            Name = updateRegionRequestDto.Name,
+            RegionImageUrl = updateRegionRequestDto.RegionImageUrl
+
+        };
+        
         // Check if the region exists
-        var regionDomainModel =await _context.Regions.SingleOrDefaultAsync(region => region.Id == id);
+        regionDomainModel = await _regionRepository.UpdateByIdAsync(id, regionDomainModel);
         
         if (regionDomainModel is null)
         {
             return NotFound();
         }
-        
-        // Map the DTO to Domain Model
-        regionDomainModel.Code = updateRegionRequestDto.Code;
-        regionDomainModel.Name = updateRegionRequestDto.Name;
-        regionDomainModel.RegionImageUrl = updateRegionRequestDto.RegionImageUrl;
-        
-        // Update the region in the database
-        await _context.SaveChangesAsync();
         
         // Convert the Domain Model to DTO
         var regionDto = new RegionDto
@@ -143,14 +144,12 @@ public class RegionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
-        var existingRegion =await _context.Regions.SingleOrDefaultAsync(x => x.Id == id);
-        if (existingRegion is null)
+        var regionDomainModel = await _regionRepository.DeleteBYIdAsync(id);
+        if (regionDomainModel is null)
         {
             return NotFound();
         }
-        _context.Regions.Remove(existingRegion);
-        await _context.SaveChangesAsync();
-
+     
         return NoContent();
     }
 }

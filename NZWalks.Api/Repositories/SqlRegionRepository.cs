@@ -31,10 +31,31 @@ public class SqlRegionRepository : IRegionRepository
         return region;
     }
 
-    // public async Task<Region?> DeleteBYIdAsync(Guid id)
-    // {
-    //     return await _context.Regions.SingleOrDefaultAsync(x => x.Id == id);
-    //     await _context.Remove()
-    //     
-    // }
+    public async Task<Region?> UpdateByIdAsync(Guid id, Region region)
+    {
+        var existingRegion = await _context.Regions.SingleOrDefaultAsync(x => x.Id == id);
+        if (existingRegion is null)
+        {
+            return null;
+        }
+        existingRegion.Code = region.Code;
+        existingRegion.Name = region.Name;
+        existingRegion.RegionImageUrl = region.RegionImageUrl;
+         
+        await _context.SaveChangesAsync();
+        return existingRegion;
+    }
+
+    public async Task<Region?> DeleteBYIdAsync(Guid id)
+    {
+        var existingRegion = await _context.Regions.SingleOrDefaultAsync(x => x.Id == id);
+        if (existingRegion is null)
+        {
+            return null;
+        }
+        _context.Regions.Remove(existingRegion);
+        await _context.SaveChangesAsync();
+        return existingRegion;
+    }
+
 }
