@@ -2,9 +2,9 @@ namespace NZWalks.Api.Models.Domain;
 
 public class Region
 {
-    public required Guid Id { get; set; }
-    public required string Code { get; set; } =string.Empty;
-    public required string Name { get; set; } = string.Empty;
+    public Guid Id { get; set; }
+    public string Code { get; set; } =string.Empty;
+    public string Name { get; set; } = string.Empty;
     public string? RegionImageUrl { get; set; } = string.Empty;
     
 }
