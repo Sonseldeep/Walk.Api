@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NZWalks.Api.Data;
 using NZWalks.Api.Models.Domain;
 using NZWalks.Api.Models.DTO;
@@ -22,10 +23,10 @@ public class RegionsController : ControllerBase
     [HttpGet("api/regions")]
     [ProducesResponseType(StatusCodes.Status200OK)]
  
-    public IActionResult GetAll()
+    public async Task<IActionResult>  GetAll()
     { 
         // 1-> get data from the database - domain model bata
-        var regions = _context.Regions.ToList();
+        var regions = await _context.Regions.ToListAsync();
         
         // 2->  map the domain model to DTOs 
         var regionsDto = regions.Select(regionDomain => new RegionDto()
@@ -44,7 +45,7 @@ public class RegionsController : ControllerBase
     
     
     [HttpPost("api/regions")]
-    public IActionResult Create([FromBody] AddRegionRequestDto addRegionRequestDto )
+    public async Task<IActionResult> Create([FromBody] AddRegionRequestDto addRegionRequestDto )
     {
         // Map the DTO to Domain Model
         var regionDomainModel = new Region
@@ -57,8 +58,8 @@ public class RegionsController : ControllerBase
         };
 
         // Add new region to database
-        _context.Regions.Add(regionDomainModel);
-        _context.SaveChanges();
+        await _context.Regions.AddAsync(regionDomainModel);
+        await _context.SaveChangesAsync();
          
         // Map the Domain Model to DTO
         var regionDto = new RegionDto
@@ -76,10 +77,10 @@ public class RegionsController : ControllerBase
     [HttpPut("api/regions/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
     {
         // Check if the region exists
-        var regionDomainModel = _context.Regions.SingleOrDefault(region => region.Id == id);
+        var regionDomainModel =await _context.Regions.SingleOrDefaultAsync(region => region.Id == id);
         
         if (regionDomainModel is null)
         {
@@ -92,7 +93,7 @@ public class RegionsController : ControllerBase
         regionDomainModel.RegionImageUrl = updateRegionRequestDto.RegionImageUrl;
         
         // Update the region in the database
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         
         // Convert the Domain Model to DTO
         var regionDto = new RegionDto
@@ -110,9 +111,9 @@ public class RegionsController : ControllerBase
     [HttpGet("api/regions/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult GetById([FromRoute] Guid id)
+    public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
-        var existingRegion = _context.Regions.SingleOrDefault(x => x.Id == id);
+        var existingRegion = await _context.Regions.SingleOrDefaultAsync(x => x.Id == id);
         if (existingRegion is null)
         {
             return NotFound();
@@ -128,7 +129,7 @@ public class RegionsController : ControllerBase
         };
         
 
-        return Ok(existingRegion);
+        return Ok(regionDto);
     }
 
   
@@ -136,15 +137,15 @@ public class RegionsController : ControllerBase
     [HttpDelete("api/regions/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult Delete([FromRoute] Guid id)
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
-        var existingRegion = _context.Regions.SingleOrDefault(x => x.Id == id);
+        var existingRegion =await _context.Regions.SingleOrDefaultAsync(x => x.Id == id);
         if (existingRegion is null)
         {
             return NotFound();
         }
         _context.Regions.Remove(existingRegion);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
