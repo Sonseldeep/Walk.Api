@@ -23,4 +23,18 @@ public class SqlRegionRepository : IRegionRepository
            .Regions
            .SingleOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<Region> CreateAsync(Region region)
+    {
+        await _context.Regions.AddAsync(region);
+        await _context.SaveChangesAsync();
+        return region;
+    }
+
+    // public async Task<Region?> DeleteBYIdAsync(Guid id)
+    // {
+    //     return await _context.Regions.SingleOrDefaultAsync(x => x.Id == id);
+    //     await _context.Remove()
+    //     
+    // }
 }

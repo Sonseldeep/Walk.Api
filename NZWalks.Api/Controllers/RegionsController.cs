@@ -62,8 +62,8 @@ public class RegionsController : ControllerBase
         };
 
         // Add new region to database
-        await _context.Regions.AddAsync(regionDomainModel);
-        await _context.SaveChangesAsync();
+        await _regionRepository.CreateAsync(regionDomainModel);
+    
          
         // Map the Domain Model to DTO
         var regionDto = new RegionDto
