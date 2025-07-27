@@ -117,7 +117,7 @@ public class RegionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
-        var existingRegion = await _context.Regions.SingleOrDefaultAsync(x => x.Id == id);
+        var existingRegion = await _regionRepository.GetByIdAsync(id);
         if (existingRegion is null)
         {
             return NotFound();

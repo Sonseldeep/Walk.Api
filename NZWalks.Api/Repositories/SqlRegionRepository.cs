@@ -16,4 +16,11 @@ public class SqlRegionRepository : IRegionRepository
     {
        return  await _context.Regions.ToListAsync();
     }
+
+    public async Task<Region?> GetByIdAsync(Guid id)
+    {
+       return await _context
+           .Regions
+           .SingleOrDefaultAsync(x => x.Id == id);
+    }
 }
