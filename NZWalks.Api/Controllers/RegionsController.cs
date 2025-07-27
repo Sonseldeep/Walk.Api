@@ -41,6 +41,8 @@ public class RegionsController : ControllerBase
         // 3->  return DTOS not domain model
         return Ok(regionsDto);
     }
+    
+    
     [HttpPost("api/regions")]
     public IActionResult Create([FromBody] AddRegionRequestDto addRegionRequestDto )
     {
@@ -71,6 +73,36 @@ public class RegionsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = regionDto.Id },regionDto);
     }
 
+    [HttpPut("api/regions/{id:guid}")]
+    public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
+    {
+        // Check if the region exists
+        var regionDomainModel = _context.Regions.SingleOrDefault(region => region.Id == id);
+        
+        if (regionDomainModel is null)
+        {
+            return NotFound();
+        }
+        
+        // Map the DTO to Domain Model
+        regionDomainModel.Code = updateRegionRequestDto.Code;
+        regionDomainModel.Name = updateRegionRequestDto.Name;
+        regionDomainModel.RegionImageUrl = updateRegionRequestDto.RegionImageUrl;
+        
+        // Update the region in the database
+        _context.SaveChanges();
+        
+        // Convert the Domain Model to DTO
+        var regionDto = new RegionDto
+        {
+            Id = regionDomainModel.Id,
+            Code = regionDomainModel.Code,
+            Name = regionDomainModel.Name,
+            RegionImageUrl = regionDomainModel.RegionImageUrl
+        };
+ 
+        return Ok(regionDto);
+    }
     [HttpGet("api/regions/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
