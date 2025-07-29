@@ -35,6 +35,23 @@ namespace NZWalks.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Difficulties");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("0f979d1a-5f56-4c03-8ac8-5ea842a40364"),
+                            Name = "Easy"
+                        },
+                        new
+                        {
+                            Id = new Guid("c57640ef-b130-49bf-ab1c-c7f820fe6725"),
+                            Name = "Medium"
+                        },
+                        new
+                        {
+                            Id = new Guid("fdcf6bc0-d118-4be7-9c0d-71a03af164db"),
+                            Name = "Hard"
+                        });
                 });
 
             modelBuilder.Entity("NZWalks.Api.Models.Domain.Region", b =>
@@ -57,6 +74,57 @@ namespace NZWalks.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Regions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("cdde7bd2-de9a-47b3-ac79-42190d98e619"),
+                            Code = "AKL",
+                            Name = "Auckland",
+                            RegionImageUrl = "https://images.pexels.com/photos/17824133/pexels-photo-17824133.jpeg"
+                        },
+                        new
+                        {
+                            Id = new Guid("b1f0a2d3-4e6c-4b5a-8f7b-9c8d1e2f3a4b"),
+                            Code = "WLG",
+                            Name = "Wellington",
+                            RegionImageUrl = "https://images.pexels.com/photos/395939/pexels-photo-395939.jpeg"
+                        },
+                        new
+                        {
+                            Id = new Guid("a2b1c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"),
+                            Code = "CHC",
+                            Name = "Christchurch",
+                            RegionImageUrl = "https://images.pexels.com/photos/27912270/pexels-photo-27912270.jpeg"
+                        },
+                        new
+                        {
+                            Id = new Guid("f1e2d3c4-b5a6-47b8-9c0d-1e2f3a4b5c6d"),
+                            Code = "DUD",
+                            Name = "Dunedin",
+                            RegionImageUrl = "https://images.pexels.com/photos/424611/pexels-photo-424611.jpeg"
+                        },
+                        new
+                        {
+                            Id = new Guid("12345678-90ab-cdef-1234-567890abcdef"),
+                            Code = "NSN",
+                            Name = "Nelson",
+                            RegionImageUrl = "https://images.pexels.com/photos/3396651/pexels-photo-3396651.jpeg"
+                        },
+                        new
+                        {
+                            Id = new Guid("abcdef12-3456-7890-abcd-ef1234567890"),
+                            Code = "TGA",
+                            Name = "Tauranga",
+                            RegionImageUrl = "https://images.pexels.com/photos/17982626/pexels-photo-17982626.jpeg"
+                        },
+                        new
+                        {
+                            Id = new Guid("fedcba98-7654-3210-fedc-ba9876543210"),
+                            Code = "NPE",
+                            Name = "Napier",
+                            RegionImageUrl = "https://images.pexels.com/photos/20326273/pexels-photo-20326273.jpeg"
+                        });
                 });
 
             modelBuilder.Entity("NZWalks.Api.Models.Domain.Walk", b =>
