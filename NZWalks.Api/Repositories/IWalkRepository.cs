@@ -11,4 +11,7 @@ public interface IWalkRepository
    // GetALl ko pani definition garaune
 
    Task<List<Walk>> GetAllAsync();
+   
+   // Get BY ID 
+   Task<Walk?> GetByIdAsync(Guid id);
 }
