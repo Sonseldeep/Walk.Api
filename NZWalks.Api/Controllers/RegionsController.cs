@@ -77,6 +77,7 @@ public class RegionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         // Map DTO to Domain Model
         var regionDomainModel = _mapper.Map<Region>(updateRegionRequestDto);
         
@@ -91,6 +92,7 @@ public class RegionsController : ControllerBase
         // Convert the Domain Model to DTO
         var regionDto = _mapper.Map<RegionDto>(regionDomainModel);
         return Ok(regionDto);
+
     }
     
     
