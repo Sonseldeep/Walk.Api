@@ -58,4 +58,35 @@ public class WalksController : ControllerBase
         // Map Domain Model to DTO
         return Ok(_mapper.Map<WalkDto>(walkDomainModel));
     }
+    
+    // update walk
+    [HttpPut("walks/{id:guid}")]
+    public async Task<IActionResult> Update([FromRoute] Guid id, UpdateWalkRequestDto updateWalkRequestDto)
+    {
+        // Map DTO to Domain Model
+        var walkDomainModel = _mapper.Map<Walk>(updateWalkRequestDto);
+        walkDomainModel = await _walkRepository.UpdateAsync(id, walkDomainModel);
+        
+        if( walkDomainModel is null)
+        {
+            return NotFound();
+        }
+        
+        // Map Domain Model to DTO
+        return Ok(_mapper.Map<WalkDto>(walkDomainModel));
+    }
+    
+    // Delete Walk
+
+    [HttpDelete("walks/{id:guid}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
+    {
+        var deleteDomainModel = await _walkRepository.DeleteByIdAsync(id);
+        if (deleteDomainModel is null)
+        {
+            return NotFound(); 
+        }
+
+        return NoContent();
+    }
 }

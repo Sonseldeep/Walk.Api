@@ -14,4 +14,10 @@ public interface IWalkRepository
    
    // Get BY ID 
    Task<Walk?> GetByIdAsync(Guid id);
+   
+   // Update walk ko logic databse
+   Task<Walk?> UpdateAsync(Guid id, Walk walk);
+   
+   // Delete walk by id
+   Task<Walk?> DeleteByIdAsync(Guid id);
 }

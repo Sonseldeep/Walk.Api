@@ -34,4 +34,36 @@ public class SqlWalkRepository: IWalkRepository
         var existingWalk = await _dbContext.Walks.Include("Difficulty").Include("Region").SingleOrDefaultAsync(x => x.Id == id);
         return existingWalk;
     }
+
+    public async  Task<Walk?> UpdateAsync(Guid id, Walk walk)
+    {
+        var existingWalk = await _dbContext.Walks.SingleOrDefaultAsync(x => x.Id == id);
+        if (existingWalk is null)
+        {
+            return null;
+        }
+
+        existingWalk.Name = walk.Name;
+        existingWalk.Description = walk.Description;
+        existingWalk.LengthInKm = walk.LengthInKm;
+        existingWalk.WalkImageUrl = walk.WalkImageUrl;
+        existingWalk.RegionId = walk.RegionId;
+        existingWalk.DifficultyId = walk.DifficultyId;
+
+        await _dbContext.SaveChangesAsync();
+        return existingWalk;
+
+    }
+
+    public async Task<Walk?> DeleteByIdAsync(Guid id)
+    {
+       var existingWalk =  await _dbContext.Walks.SingleOrDefaultAsync(x=> x.Id == id);
+       if (existingWalk is null)
+       {
+           return null;
+       }
+       _dbContext.Walks.Remove(existingWalk);
+       await _dbContext.SaveChangesAsync();
+       return existingWalk; 
+    }
 }
