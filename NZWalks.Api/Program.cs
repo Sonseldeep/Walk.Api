@@ -18,6 +18,8 @@ builder.Services.AddDbContext<ApplicationDbContext>
 
 // Registering the repository
 builder.Services.AddScoped<IRegionRepository, SqlRegionRepository>();
+builder.Services.AddScoped<IWalkRepository, SqlWalkRepository>();
+
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 var app = builder.Build();
 
