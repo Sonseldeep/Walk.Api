@@ -48,14 +48,19 @@ public class WalksController : ControllerBase
     // Sorting ko lagi, next arko parameter pathaune
     // /api/walks?filterOn=Name&filterQuery=Track&sortBy=Name&isAscending=true
     
+    
+    // Pagination : 
+    // /api/walks?filterOn=Name&filterQuery=Track&sortBy=Name&isAscending=true&pageNumber=1pageSize=10
+    
     // after that IWalkRepo maa ni add garnu parxa
     [HttpGet("walks")]
-    public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery,[FromQuery] string? sortBy,[FromQuery] bool? isAscending)
+    public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery,[FromQuery] string? sortBy,[FromQuery] bool? isAscending, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
     {
-        // not to forget to pass the sortBy and isAscending to the parameters below
+        // not to forget to pass the sortBy and isAscending to the parameters below 
         // isAscending is nullable, so ?? true garnu parxa 
         
-        var walksDomainModel =  await _walkRepository.GetAllAsync(filterOn,filterQuery,sortBy, isAscending ?? true);
+        var walksDomainModel =  await _walkRepository.GetAllAsync(filterOn,filterQuery,sortBy,
+            isAscending ?? true, pageNumber, pageSize);
         // Map Domain Model to DTO
         return Ok(_mapper.Map<List<WalkDto>>(walksDomainModel));
     }
