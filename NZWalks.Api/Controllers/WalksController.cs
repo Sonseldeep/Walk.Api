@@ -47,7 +47,7 @@ public class WalksController : ControllerBase
     [HttpGet("walks")]
     public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery)
     {
-        var walksDomainModel =  await _walkRepository.GetAllAsync();
+        var walksDomainModel =  await _walkRepository.GetAllAsync(filterOn,filterQuery);
         // Map Domain Model to DTO
         return Ok(_mapper.Map<List<WalkDto>>(walksDomainModel));
     }
