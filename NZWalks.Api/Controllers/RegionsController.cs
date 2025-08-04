@@ -120,7 +120,7 @@ public class RegionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     { 
-        var regionDomainModel = await _regionRepository.DeleteBYIdAsync(id);
+        var regionDomainModel = await _regionRepository.DeleteByIdAsync(id);
         if (regionDomainModel is null)
         {
             return NotFound();
