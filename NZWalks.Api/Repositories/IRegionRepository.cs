@@ -10,5 +10,5 @@ public interface IRegionRepository
     Task<Region> CreateAsync(Region region);
 
     Task<Region?> UpdateByIdAsync(Guid id, Region region);
-    Task<Region?> DeleteBYIdAsync(Guid id);
+    Task<Region?> DeleteByIdAsync(Guid id);
 }

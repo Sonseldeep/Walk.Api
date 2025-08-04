@@ -11,7 +11,7 @@ public interface IWalkRepository
    // GetALl ko pani definition garaune
    // filter garda controller maa ke xa tei name yeta ni garako suru maa null hunxa default
 
-   Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null);
+   Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null, string? sortBy = null, bool isAscending  = true );
    
    // Get BY ID 
    Task<Walk?> GetByIdAsync(Guid id);
