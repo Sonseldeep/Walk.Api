@@ -9,8 +9,9 @@ public interface IWalkRepository
    Task<Walk> CreateAsync(Walk walk);
      
    // GetALl ko pani definition garaune
+   // filter garda controller maa ke xa tei name yeta ni garako suru maa null hunxa default
 
-   Task<List<Walk>> GetAllAsync();
+   Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null);
    
    // Get BY ID 
    Task<Walk?> GetByIdAsync(Guid id);

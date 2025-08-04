@@ -42,8 +42,10 @@ public class WalksController : ControllerBase
     }
 
 
+    // get all maa filter laune ho
+    // /api/walks?filterOn=Name&filterQuery=Track
     [HttpGet("walks")]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery)
     {
         var walksDomainModel =  await _walkRepository.GetAllAsync();
         // Map Domain Model to DTO

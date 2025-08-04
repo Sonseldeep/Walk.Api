@@ -24,9 +24,25 @@ public class SqlWalkRepository: IWalkRepository
        return walk;
     }
 
-    public async Task<List<Walk>> GetAllAsync()
+    // filter garisake paxi, controller ra IWalkRepository maa
+    // GetAllAsync maa pani filterOn and filterQuery lai add agre as parameters
+    // so that we can filter the data based on the query
+    public async Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null)
     {
-        return await _dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+        // Note : Sorting, filtering, pagination gardaaa we have to use IQueryable
+        // so that we can apply the filter on the IQueryable and then execute the query
+        var walks = _dbContext.Walks.AsNoTracking().Include("Difficulty").Include("Region").AsQueryable();
+        
+        // Filtering
+        if (string.IsNullOrWhiteSpace(filterOn) != false || string.IsNullOrWhiteSpace(filterQuery) != false)
+            return await walks.ToListAsync();
+        if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+        {
+            walks = walks.Where(x => x.Name.Contains(filterQuery));
+        }
+
+        return await walks.ToListAsync();
+        // return await _dbContext.Walks.Include("Difficulty").Include("Regio n").ToListAsync();
     }
 
     public async Task<Walk?> GetByIdAsync(Guid id)
