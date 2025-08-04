@@ -39,8 +39,8 @@ This project follows Clean Architecture principles with the following layers:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/nzwalks-api.git
-cd nzwalks-api
+git clone https://github.com/Sonseldeep/Walk.Api
+cd Walk.Api
 ```
 ### 2. Configuration Database Connection
 
