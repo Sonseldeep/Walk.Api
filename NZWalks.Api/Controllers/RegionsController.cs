@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NZWalks.Api.CustomActionFilters;
 using NZWalks.Api.Data;
 using NZWalks.Api.Models.Domain;
 using NZWalks.Api.Models.DTO;
@@ -47,10 +48,10 @@ public class RegionsController : ControllerBase
     
     
     [HttpPost("api/regions")]
+    [ValidateModel]
     public async Task<IActionResult> Create([FromBody] AddRegionRequestDto addRegionRequestDto )
     {
-        if (ModelState.IsValid)
-        {
+        
             // Map the DTO to Domain Model
             var regionDomainModel = _mapper.Map<Region>(addRegionRequestDto);
 
@@ -64,20 +65,19 @@ public class RegionsController : ControllerBase
             return CreatedAtAction(nameof(GetById), new { id = regionDto.Id },regionDto);
 
             
-        }
-        else
-        {
-            return BadRequest(ModelState);
-        }
+        
+          
+        
         
     }
 
     [HttpPut("api/regions/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ValidateModel]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        
         // Map DTO to Domain Model
         var regionDomainModel = _mapper.Map<Region>(updateRegionRequestDto);
         
