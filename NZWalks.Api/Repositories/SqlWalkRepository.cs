@@ -24,25 +24,40 @@ public class SqlWalkRepository: IWalkRepository
        return walk;
     }
 
-    // filter garisake paxi, controller ra IWalkRepository maa
-    // GetAllAsync maa pani filterOn and filterQuery lai add agre as parameters
-    // so that we can filter the data based on the query
-    public async Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null)
+
+    
+    public async Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null, string? sortBy = null, bool isAscending = true)
     {
-        // Note : Sorting, filtering, pagination gardaaa we have to use IQueryable
-        // so that we can apply the filter on the IQueryable and then execute the query
-        var walks = _dbContext.Walks.AsNoTracking().Include("Difficulty").Include("Region").AsQueryable();
-        
+        // filtering and sorting ko lagi IQueryable use garne
+        var walks = _dbContext.Walks
+            .AsNoTracking()
+            .Include("Difficulty")
+            .Include("Region")
+            .AsQueryable();
+
         // Filtering
-        if (string.IsNullOrWhiteSpace(filterOn) != false || string.IsNullOrWhiteSpace(filterQuery) != false)
-            return await walks.ToListAsync();
-        if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+        if (!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrWhiteSpace(filterQuery))
         {
-            walks = walks.Where(x => x.Name.Contains(filterQuery));
+            if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+            {
+                walks = walks.Where(x => x.Name.Contains(filterQuery));
+            }
+        }
+
+        // Sorting
+        if (!string.IsNullOrWhiteSpace(sortBy))
+        {
+            if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+            {
+                walks = isAscending ? walks.OrderBy(x => x.Name) : walks.OrderByDescending(x => x.Name);
+            }
+            else if (sortBy.Equals("Length", StringComparison.OrdinalIgnoreCase))
+            {
+                walks = isAscending ? walks.OrderBy(x => x.LengthInKm) : walks.OrderByDescending(x => x.LengthInKm);
+            }
         }
 
         return await walks.ToListAsync();
-        // return await _dbContext.Walks.Include("Difficulty").Include("Regio n").ToListAsync();
     }
 
     public async Task<Walk?> GetByIdAsync(Guid id)
