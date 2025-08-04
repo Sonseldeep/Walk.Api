@@ -44,13 +44,14 @@ public class SqlWalkRepository: IWalkRepository
             }
         }
 
-        // Sorting
+        // Sorting 
         if (!string.IsNullOrWhiteSpace(sortBy))
         {
             if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
             {
                 walks = isAscending ? walks.OrderBy(x => x.Name) : walks.OrderByDescending(x => x.Name);
             }
+            // sorting by length
             else if (sortBy.Equals("Length", StringComparison.OrdinalIgnoreCase))
             {
                 walks = isAscending ? walks.OrderBy(x => x.LengthInKm) : walks.OrderByDescending(x => x.LengthInKm);
