@@ -18,6 +18,11 @@ builder.Services.AddDbContext<ApplicationDbContext>
    (options => options
         .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
    );
+// Authentication ko lagi 
+builder.Services.AddDbContext<NZWalksAuthDbContext>
+    (options => options
+        .UseSqlServer(builder.Configuration.GetConnectionString("DefaultAuthConnection"))
+    );
 
 // Registering the repository
 builder.Services.AddScoped<IRegionRepository, SqlRegionRepository>();
