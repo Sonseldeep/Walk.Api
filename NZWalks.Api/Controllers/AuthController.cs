@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
       if (identityResult.Succeeded)
       {
           // Add roles to this user
-          if (registerRequestDto.Roles != null && registerRequestDto.Roles.Any())
+          if (registerRequestDto.Roles is not null && registerRequestDto.Roles.Any())
           {
               identityResult = await _userManager.AddToRoleAsync(identityUser, registerRequestDto.Roles);
               if (identityResult.Succeeded)
