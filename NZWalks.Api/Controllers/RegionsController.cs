@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NZWalks.Api.CustomActionFilters;
@@ -13,6 +14,7 @@ namespace NZWalks.Api.Controllers;
 
 
 [ApiController]
+[Authorize]
 
 public class RegionsController : ControllerBase
 {
@@ -30,6 +32,7 @@ public class RegionsController : ControllerBase
     
     [HttpGet("api/regions")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+
  
     public async Task<IActionResult>  GetAll()
     { 
