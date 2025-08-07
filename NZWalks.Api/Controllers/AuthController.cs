@@ -44,4 +44,22 @@ public class AuthController : ControllerBase
 
             
       }
+    
+    
+    // Post: /api/auth/login
+    [HttpPost("api/auth/login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
+    {
+       var user =   await _userManager.FindByNameAsync(loginRequestDto.Username);
+       if (user is null) return BadRequest("Username or password is incorrect");
+       var checkPasswordResult =  await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
+       if (checkPasswordResult)
+       {
+           // Create Token
+
+           return Ok();
+       }
+       return BadRequest("Username or password is incorrect");
+        
+    }
 }
