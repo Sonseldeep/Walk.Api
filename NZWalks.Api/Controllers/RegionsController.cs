@@ -14,8 +14,6 @@ namespace NZWalks.Api.Controllers;
 
 
 [ApiController]
-[Authorize]
-
 public class RegionsController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -32,6 +30,7 @@ public class RegionsController : ControllerBase
     
     [HttpGet("api/regions")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [Authorize(Roles = "Reader")]
 
  
     public async Task<IActionResult>  GetAll()
@@ -52,6 +51,7 @@ public class RegionsController : ControllerBase
     
     [HttpPost("api/regions")]
     [ValidateModel]
+    [Authorize(Roles = "Writer")]
     public async Task<IActionResult> Create([FromBody] AddRegionRequestDto addRegionRequestDto )
     {
         
@@ -78,6 +78,7 @@ public class RegionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ValidateModel]
+    [Authorize(Roles="Writer")]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
     {
         
@@ -102,6 +103,7 @@ public class RegionsController : ControllerBase
     [HttpGet("api/regions/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = "Reader")]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
         var existingRegion = await _regionRepository.GetByIdAsync(id);
@@ -121,6 +123,7 @@ public class RegionsController : ControllerBase
     [HttpDelete("api/regions/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [Authorize(Roles = "Writer,Reader")]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     { 
         var regionDomainModel = await _regionRepository.DeleteByIdAsync(id);
