@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -52,12 +53,13 @@ builder.Services.AddDbContext<ApplicationDbContext>
 builder.Services.AddDbContext<NZWalksAuthDbContext>
     (options => options
         .UseSqlServer(builder.Configuration.GetConnectionString("DefaultAuthConnection"))
-    );
+    ); 
 
 // Registering the repository
 builder.Services.AddScoped<IRegionRepository, SqlRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SqlWalkRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<IImageRepository, LocalImageRepository>();
 
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
