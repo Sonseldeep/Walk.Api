@@ -1,3 +1,4 @@
+
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -110,11 +111,12 @@ app.UseHttpsRedirection();
 // Yo ni add gareko just UseAuthorization vanda mathi
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
     RequestPath = "/Images"
-    
+    // ServeUnknownFileTypes = true // only for testing
 });
 
 app.MapControllers();
